@@ -1,0 +1,154 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+  .image {
+    border-radius:60%;
+    height: 50px;
+    width: 50px;
+  }
+</style>
+
+{% if error %}
+     <div class="alert alert-danger" role="alert">
+       {{error}}
+     </div>
+{% endif %}
+
+<div class="row pl-2" style="text-align:center;">
+    <h1> {{work.title}} </h1>
+</div>
+<hr/>
+<div class="row">
+  <div class="col-4 font-weight-light" onclick="window.location='{% url 'detail_author' work.author.id work.author.coolname %}'" style="cursor:pointer;">
+    <span class="oi oi-pencil" onclick=""></span> {{ work.author }}
+  </div>
+  <div class="col-3 font-weight-light">
+    {{ work.get_rating }} <span class="oi oi-star small"></span>
+  </div>
+  <div class="col-3 font-weight-light">
+    {{ work.word_count }} <span class="oi oi-excerpt"></span>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-4 font-weight-light">
+    <b>Genre:</b> {{ work.genre }}
+  </div>
+  <div class="col-4 font-weight-light">
+    <b>Type:</b> {{ work.type }}
+  </div>
+</div>
+<br></br>
+<div class="row ml-1">
+  <span class="oi oi-calendar"></span> {{ work.pub_date_pretty }}
+</div>
+
+<hr/>
+
+{{ work.body|linebreaks }}
+<hr/>
+
+{% if user.author.coolname == work.author.coolname%}
+<div class="row">
+  <div class="col-6"><a href="{% url 'delete' work.id work.slug %}"><button class="btn btn-sm btn-outline-danger my-2 my-sm-0 pl-2" type="submit">Delete</button></a></div>
+</div>
+{%endif%}
+<br/><br/>
+<div class="row">
+  <div class="col-10">
+  <div style="display: inline-block">
+    <form class="align-center" action="{% url 'rate' work.id work.slug %}" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      {% if work.author.coolname == user.author.coolname %}
+      <div class="row" align="left">
+        <div class="col-6"><button class="btn btn-sm btn-outline-info my-2 my-sm-0 pl-2" type="button">Current: {{ work.get_rating }}<span class="oi oi-star small"></span></button></div>
+      </div>
+      {% elif has_voted %}
+      <div class="row" align="left">
+        <div class="col-6"><button class="btn btn-sm btn-outline-info my-2 my-sm-0 pl-2" type="button">Current: {{ work.get_rating }}<span class="oi oi-star small"></span></button></div>
+      </div>
+
+      {% else %}
+      <div class="row names">
+        <div class="col-6"><h5 class="font-weight-light">Rate:</h5></div>
+        <div class="col-6"><input type="text" name="rating" class="form-control-sm mr-sm-2" placeholder="Rating"/></div>
+      </div>
+      <div class="row" align="left">
+        <div class="col-6"><a href="{% url 'rate' work.id work.slug %}"><button class="btn btn-sm btn-outline-success my-2 my-sm-0 pl-2" type="submit">Rate</button></a></div>
+        <div class="col-6"><button class="btn btn-sm btn-outline-info my-2 my-sm-0 pl-2" type="button">Current: {{ work.get_rating }}<span class="oi oi-star small"></span></button></div>
+      </div>
+      <div class="row">
+        <small class="form-text text-muted">
+          <ul>
+            <li>Provide a number between 0 and 5</li>
+          </ul>
+      </small>
+      </div>
+      {% endif %}
+    </form>
+  </div>
+
+</div>
+</div>
+
+<br/>
+{% for comment in comments %}
+     <div style="padding: 10px">
+       <div class="row">
+         <div class="col-4">
+           {% if comment.user.author.active %}
+           <div onclick="window.location='{% url 'detail_author' comment.user.author.id comment.user.author.coolname %}'" style="cursor:pointer;">
+           <img class="image" src="{{comment.user.normaluser.photo.url}}" alt="photo_comment" height="50px" width="50px" style="border-radius:50%"><br/>
+           <h5 class="font-weight-light">@{{comment.user.author.coolname}}</h5>
+           </div>
+           {%else%}
+           <img class="image" src="{{comment.user.normaluser.photo.url}}" alt="photo_comment" height="50px" width="50px" style="border-radius:50%"><br/>
+           <h5 class="font-weight-light">@{{comment.user.username}}</h5>
+           {% endif %}
+         </div>
+         <div class="col-8">
+           <div class="row">
+             <h6 style="font-weight-light">Replying To: @ {{comment.name}}</h6>
+           </div>
+           <div class="row">
+             <span class="text-muted font-weight-normal">
+               {{ comment.created_on }}
+             </span>
+           </div>
+           <div class="row">
+             {{ comment.body | linebreaks }}
+           </div>
+           {% if user.username == comment.user.username %}
+           <div class="row">
+             <form action="{% url 'delete_comment' comment.work.id comment.work.slug comment.id %}" method="POST">
+               {% csrf_token %}
+               <input type="submit" class="btn btn-outline-danger btn-sm" value="Delete Comment"/>
+             </form>
+           </div>
+           {% endif %}
+          </div>
+        </div>
+      </div>
+{% endfor %}
+  {% if msg %}
+  <div class="alert alert-success" role="alert">
+    {{msg}}
+  </div>
+  {% endif %}
+
+
+<form id="comment" method="POST" style="margin-top: 1.3em;" action="{% url 'comment' work.id work.slug%}" enctype="multipart/form-data">
+  {% csrf_token %}
+<div class="form-group pt-3">
+  Your Comment:<hr/>
+  <div class="row names">
+    <div class="col-6"><h5 class="font-weight-light">To:</h5></div>
+    <div class="col-6"><input type="text" name="To" class="form-control-sm mr-sm-2" placeholder="username"/></div>
+  </div>
+  <label for="">Comment Body:</label>
+    <textarea class="form-control" rows="3" name="body"></textarea>
+</div>
+  <input type="submit" class="btn btn-outline-primary btn-sm" value="Comment"/>
+</form>
+{% endblock %}

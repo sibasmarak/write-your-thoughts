@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+  .card-color-blue{
+    background-color:rgb(209, 209, 224);
+  }
+
+  h2{
+    text-align:center;
+    text-shadow: 0 0 3px #FF00FF, 0 0 5px #00FFFF;
+  }
+</style>
+
+<div class="row">
+
+  <div class="col-sm-6">
+    <div class="card border-dark" style="box-shadow: 10px 10px 5px grey;">
+      <div class="card-header"><h2 class="font-weight-light">Normal User Sign Up</h2></div>
+      <div class="card-body card-color-blue">
+        <p class="card-text text-center">
+          <ul>
+            <h4 class="text-muted text-light">You have to provide: </h4>
+            <li><b>Normal stuff</b></li>
+            <li><b>Good Pic</b></li>
+          </ul>
+          You can convert yourself to author , by approval of your post by the Admin later!<br/>
+
+          "Everyone can be author , So why not join as author?"
+        
+        <a href="{% url 'signup_user'%}" class="btn btn-primary">Count me in as Normal User</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-6">
+    <div class="card border-dark" style="box-shadow: 10px 10px 5px grey;">
+      <div class="card-header"><h2 class="font-weight-light">Author Sign Up</h2></div>
+      <div class="card-body card-color-blue">
+        <p class="card-text text-center">
+          <ul>
+            <h4 class="text-muted text-light">You have to provide: </h4>
+            <li><b>Cool name</b> - to be mentioned almost everywhere inside the LitWorld!</li>
+            <li><b>Bio</b> - a short description of yours</li>
+            <li><b>Your first LitPost</b> - which should be approved by Admin for you to be an author</li>
+          </ul>
+        </p>
+        <a href="{% url 'signup_author'%}" class="btn btn-primary">Yay! Count me in as Author</a>
+        <br/>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}

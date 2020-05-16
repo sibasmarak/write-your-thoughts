@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% if error%}
+<div class="alert alert-danger" role="alert">
+       {{ error }}
+</div>
+{% endif %}
+
+<style>
+  h1{
+    font-family:Comic-SansMS;
+  }
+
+  h5{
+    color:#9933ff;
+  }
+
+  .names{
+    text-align: left;
+  }
+
+  .typewriter h1 {
+  overflow: hidden; /* Ensures the content is not revealed until the animation */
+  font-family: monospace;
+  white-space: nowrap; /* Keeps the content on a single line */
+  margin: 0 auto; /* Gives that scrolling effect as the typing happens */
+  letter-spacing: .15em; /* Adjust as needed */
+  animation:
+    typing 3.5s steps(45, end),
+    blink-caret .75s step-end 3s;
+}
+
+/* The typing effect */
+@keyframes typing {
+  from { width: 0 }
+  to { width: 70% }
+}
+
+/* The typewriter cursor effect */
+@keyframes blink-caret {
+  from, to { border-color: transparent }
+  50% { border-color: orange; }
+}
+</style>
+<div class="container typewriter">
+  <h1 class="p-3 mb-2 text-center font-weight-light">Be Normal User</h1>
+</div>
+
+<hr/><br/>
+<div >
+  <div style="display: inline-block">
+
+    <form class="align-center" action="{% url 'signup_user'%}" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="row names">
+        <div class="col-6"><h5 class="font-weight-light">Username:</h5></div>
+        <div class="col-6"><input type="text" name="username" class="form-control-sm mr-sm-2" placeholder="Username"/></div>
+      </div>
+      <div class="row names">
+        <div class="col-6"><h5 class="font-weight-light">Password:</h5></div>
+        <div class="col-6"><input type="password" name="password1" class="form-control-sm mr-sm-2" placeholder="Password"/></div>
+      </div>
+      <div class="row names">
+        <small class="form-text text-muted">
+          Features of a Strong Password:
+          <ul>
+            <li>Your password should be 8-20 characters long</li>
+            <li>Should contain letters, numbers, special characters</li>
+            <li>Must not contain spaces, or emoji</li>
+          </ul>
+      </small>
+      </div>
+      <div class="row names">
+        <div class="col-6"><h5 class="font-weight-light">Confirm Password:</h5></div>
+        <div class="col-6"><input type="password" name="password2" class="form-control-sm mr-sm-2" placeholder="Confirm password"/></div>
+      </div>
+      <div class="row names">
+        <div class="col-6"><h5 class="font-weight-light">Email ID:</h5></div>
+        <div class="col-6"><input type="email" name="email" class="form-control-sm mr-sm-2" placeholder="name@example.com" /></div>
+      </div>
+      <div class="row names">
+        <div class="col-6"><h5 class="font-weight-light">Nice Pic:</h5></div>
+        <div class="col-6 small"><input type="file" name="photo"/></div>
+      </div>
+      <div class="row">
+        <small id="passwordHelpBlock" class="form-text text-muted">
+          <ul>
+            <li>This pic would be used inside LitWorld</li>
+          </ul>
+      </small>
+      </div>
+      <div class="row names center-align">
+        <button class="btn btn-outline-success my-2 my-sm-0 pl-2 ml-2" type="submit">Take Me In!</button>
+      </div>
+    </form>
+  </div>
+
+</div>
+{% endblock %}

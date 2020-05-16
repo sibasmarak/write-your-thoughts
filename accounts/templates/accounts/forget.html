@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<style>
+  h1{
+    font-family:Comic-SansMS;
+  }
+  h5{
+    color:#9933ff;
+  }
+.names{
+    text-align: left;
+  }
+
+  .typewriter h1 {
+  overflow: hidden; /* Ensures the content is not revealed until the animation */
+  border-right: .15em solid orange; /* The typwriter cursor */
+  white-space: nowrap; /* Keeps the content on a single line */
+  margin: auto; /* Gives that scrolling effect as the typing happens */
+  letter-spacing: .15em; /* Adjust as needed */
+  animation-iteration-count: infinite;
+  animation:
+    typing 8s steps(60, end),
+    blink-caret .75s step-end 10s;
+}
+
+/* The typing effect */
+@keyframes typing {
+  from { width: 0 }
+  to { width: 70% }
+}
+
+/* The typewriter cursor effect */
+@keyframes blink-caret {
+  from, to { border-color: transparent }
+  50% { border-color: orange; }
+}
+</style>
+<div class="container typewriter repeat mt-2">
+  <h1>Login</h1>
+</div>
+<hr/><br/>
+{% if error %}
+<div class="alert alert-danger" role="alert">
+       {{ error }}
+</div>
+{% endif %}
+
+{% if msg %}
+<div class="alert alert-success" role="alert">
+       {{ msg }}
+</div>
+{% endif %}
+
+<div class="row">
+  <div class="col-10">
+
+  <div style="display: inline-block">
+    <form class="align-center" action="{% url 'forget' %}" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="row names">
+        <div class="col-6"><h5 class="font-weight-light">Email:</h5></div>
+        <div class="col-6"><input type="email" name="email" class="form-control-sm mr-sm-2" placeholder="name@example.com"/></div>
+      </div>
+      <div class="row" align="left">
+        <div class="col-6"><button class="btn btn-sm btn-outline-success my-2 my-sm-0 pl-2" type="submit">Submit</button></div>
+      </div>
+    </form>
+  </div>
+
+</div>
+</div>
+{% endblock %}

@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+  h1{
+    font-family:Comic-SansMS;
+  }
+
+  h5{
+    color:#9933ff;
+  }
+
+.names{
+    text-align: left;
+  }
+
+  .typewriter h1 {
+  overflow: hidden; /* Ensures the content is not revealed until the animation */
+  font-family: monospace;
+  white-space: nowrap; /* Keeps the content on a single line */
+  margin: 0 auto; /* Gives that scrolling effect as the typing happens */
+  letter-spacing: .1em; /* Adjust as needed */
+  animation:
+    typing 3.5s steps(45, end),
+    blink-caret .75s step-end 3s;
+}
+
+/* The typing effect */
+@keyframes typing {
+  from { width: 0 }
+  to { width: 65% }
+}
+
+/* The typewriter cursor effect */
+@keyframes blink-caret {
+  from, to { border-color: transparent }
+  50% { border-color: orange; }
+}
+</style>
+
+{% if error %}
+<div class="alert alert-danger" role="alert">
+  {{ error }}
+</div>
+{% endif%}
+
+{% if msg %}
+<div class="alert alert-success" role="alert">
+  {{ msg }}
+</div>
+{% endif%}
+
+<div class="container typewriter">
+  <h1 class="p-3 mb-2 text-center font-weight-light">Create LitPost!</h1>
+</div>
+
+<form class="align-center" action="{% url 'create' user.author.id user.author.coolname%}" method="POST" enctype="multipart/form-data">
+{%csrf_token%}
+<div class="row names">
+  <div class="col-6"><h5 class="font-weight-light">Title Of Work:</h5></div>
+  <div class="col-6"><input type="text" name="title" class="form-control-sm mr-sm-2" placeholder="Title"/></div>
+</div>
+
+<div class="row names">
+  <div class="col-6"><h5 class="font-weight-light">Genre Of Work:</h5></div>
+  <div class="col-6">
+    <select class="form-control-sm mr-sm-2 col-sm-5" name="genre">
+      <option>Fiction</option>
+      <option>Non-Fiction</option>
+    </select>
+  </div>
+</div>
+
+<div class="row names">
+  <div class="col-6"><h5 class="font-weight-light">Type Of Work:</h5></div>
+  <div class="col-6">
+    <select class="form-control-sm mr-sm-2 col-sm-5" name="type">
+      <option>Thought</option>
+      <option>Poetry</option>
+      <option>Short Story</option>
+    </select>
+  </div>
+</div>
+
+<div class="row names">
+  <div class="col-6"><h5 class="font-weight-light">Your Post:</h5></div>
+  <div class="form-group col-6">
+    <textarea class="form-control mr-sm-2" rows="3" cols="40" name="workbody" placeholder="Body of Post"></textarea>
+  </div>
+</div>
+
+<div class="row">
+  <small id="passwordHelpBlock" class="form-text text-muted">
+    <ul>
+      <li>Thought: 100 words Max.</li>
+      <li>Poem: No limit</li>
+      <li>Short Story: No limit</li>
+    </ul>
+</small>
+</div>
+<br/>
+<div class="row">
+  <small class="form-text text-muted pl-1">
+    Note:
+    <ul>
+      <li>Your post might not be instantly posted - requires Admin Approval</li>
+      <li>Admin checks on length / content and then generally approves. Don't Worry!</li>
+      <li>If you can not see your LitPost after 2 days , please try with another Post!</li>
+      <li>Who knows, that may be the LitPost that would rock the LitBoard!</li>
+    </ul>
+</small>
+</div>
+
+<div class="row names center-align">
+  <button class="btn btn-outline-success my-2 my-sm-0 pl-2 ml-2" type="submit">Create A LitPost!</button>
+</div>
+</form>
+{% endblock %}

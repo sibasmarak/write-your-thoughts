@@ -1,0 +1,196 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% if error%}
+<div class="alert alert-danger" role="alert">
+       {{ error }}
+</div>
+
+{% elif msg %}
+<div class="alert alert-success" role="alert">
+       {{ msg }}
+</div>
+{% endif %}
+
+<style>
+  h1{
+    font-family:Comic-SansMS;
+  }
+
+  h5{
+    color:#9933ff;
+  }
+
+  .names{
+    text-align: left;
+  }
+
+  .typewriter h1 {
+  overflow: hidden; /* Ensures the content is not revealed until the animation */
+  font-family: monospace;
+  white-space: nowrap; /* Keeps the content on a single line */
+  margin: 0 auto; /* Gives that scrolling effect as the typing happens */
+  letter-spacing: .15em; /* Adjust as needed */
+  animation:
+    typing 3.5s steps(45, end),
+    blink-caret .75s step-end 3s;
+}
+
+/* The typing effect */
+@keyframes typing {
+  from { width: 0 }
+  to { width: 65% }
+}
+
+/* The typewriter cursor effect */
+@keyframes blink-caret {
+  from, to { border-color: transparent }
+  50% { border-color: orange; }
+}
+
+</style>
+<div class="container typewriter">
+  <h1 class="p-3 mb-2 text-center font-weight-light">Be An Author</h1>
+</div>
+
+<hr/><br/>
+<div >
+  <div style="display: inline-block">
+
+    <form class="align-center" action="{% url 'signup_author' %}" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="row names">
+        <div class="col-6"><h5 class="font-weight-light">Username:</h5></div>
+        <div class="col-6"><input type="text" name="username" class="form-control-sm mr-sm-2" placeholder="Username"/></div>
+      </div>
+      <div class="row names">
+        <div class="col-6"><h5 class="font-weight-light">Password:</h5></div>
+        <div class="col-6"><input type="password" name="password1" class="form-control-sm mr-sm-2" placeholder="Password"/></div>
+      </div>
+      <div class="row names">
+        <small class="form-text text-muted">
+          Features of a Strong Password:
+          <ul>
+            <li>Your password should be 8-20 characters long</li>
+            <li>Should contain letters, numbers, special characters</li>
+            <li>Must not contain spaces, or emoji</li>
+          </ul>
+      </small>
+      </div>
+      <div class="row names">
+        <div class="col-6"><h5 class="font-weight-light">Confirm Password:</h5></div>
+        <div class="col-6"><input type="password" name="password2" class="form-control-sm mr-sm-2" placeholder="Confirm password"/></div>
+      </div>
+      <div class="row names">
+        <div class="col-6"><h5 class="font-weight-light">Coolname:</h5></div>
+        <div class="col-6"><input type="text" name="coolname" class="form-control-sm mr-sm-2" placeholder="Coolname"/></div>
+      </div>
+      <div class="row">
+        <small id="passwordHelpBlock" class="form-text text-muted">
+          <ul>
+            <li>Your coolname should be one of the reason to have a large fan base!</li>
+            <li>It should be short and easy to say - and impactful too</li>
+          </ul>
+      </small>
+      </div>
+      <div class="row names">
+        <div class="col-6"><h5 class="font-weight-light">Short Bio:</h5></div>
+        <div class="form-group col-6">
+          <textarea class="form-control mr-sm-2" rows="3" name="bio" cols="40" placeholder="Your Short Bio"></textarea>
+        </div>
+      </div>
+
+      <div class="row">
+        <small id="passwordHelpBlock" class="form-text text-muted">
+          <ul>
+            <li>Irony: Make your bio both short and lengthy</li>
+          </ul>
+      </small>
+      </div>
+      <div class="row names">
+        <div class="col-6"><h5 class="font-weight-light">Email ID:</h5></div>
+        <div class="col-6"><input type="email" name="email" class="form-control-sm mr-sm-2" placeholder="name@example.com" /></div>
+      </div>
+      <div class="row names">
+        <div class="col-6"><h5 class="font-weight-light">Nice Pic:</h5></div>
+        <div class="col-6 small"><input type="file" name="photo"/></div>
+      </div>
+      <div class="row">
+        <small id="passwordHelpBlock" class="form-text text-muted">
+          <ul>
+            <li>This pic would be used inside LitWorld</li>
+          </ul>
+      </small>
+      </div>
+
+      <div class="row">
+        <large id="passwordHelpBlock" class="form-text text-muted">
+          <b>YOUR FIRST LitPost - YO HO!</b>
+          <hr/>
+      </large>
+      </div>
+
+      <div class="row names">
+        <div class="col-6"><h5 class="font-weight-light">Title Of Work:</h5></div>
+        <div class="col-6"><input type="text" name="title" class="form-control-sm mr-sm-2" placeholder="Title"/></div>
+      </div>
+
+      <div class="row names">
+        <div class="col-6"><h5 class="font-weight-light">Genre Of Work:</h5></div>
+        <div class="col-6">
+          <select class="form-control form-control-sm" name="genre">
+            <option>Fiction</option>
+            <option>Non-Fiction</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row names">
+        <div class="col-6"><h5 class="font-weight-light">Type Of Work:</h5></div>
+        <div class="col-6">
+          <select class="form-control form-control-sm" name="type">
+            <option>Thought</option>
+            <option>Poetry</option>
+            <option>Short Story</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row names">
+        <div class="col-6"><h5 class="font-weight-light">Your Post:</h5></div>
+        <div class="form-group col-6">
+          <textarea class="form-control mr-sm-2" rows="3" cols="40" name="workbody" placeholder="Body of Post"></textarea>
+        </div>
+      </div>
+
+      <div class="row">
+        <small id="passwordHelpBlock" class="form-text text-muted">
+          <ul>
+            <li>Thought: 100 words Max.</li>
+            <li>Poem: No limit</li>
+            <li>Short Story: No limit</li>
+          </ul>
+      </small>
+      </div>
+      <br/>
+      <div class="row">
+        <small class="form-text text-muted">
+          Note:
+          <ul>
+            <li>You would become author after Admin approves your first LitPost - may take a day or two</li>
+            <li>Admin checks on length / content and then genrally approves. Don't Worry!</li>
+            <li>If you can not login after 2 days , please try with another Post!</li>
+            <li>Who knows, that may be the LitPost that would rock the LitBoard!</li>
+          </ul>
+      </small>
+      </div>
+
+      <div class="row names center-align">
+        <button class="btn btn-outline-success my-2 my-sm-0 pl-2 ml-2" type="submit">Take Me In!</button>
+      </div>
+    </form>
+  </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+  .bgthought{
+    opacity:0.7;
+  }
+
+  .bgthought:hover{
+    opacity:1.0;
+  }
+
+  .authimg {
+    border-radius:60%;
+    height: 175px;
+    width: 175px;
+  }
+
+  h3 {
+    font-family:"Comic Sans MS", cursive, sans-serif;
+    font-size: medium;
+  }
+</style>
+{% if error %}
+     <div class="alert alert-danger" role="alert">
+       {{error}}
+     </div>
+{% endif %}
+
+{% for author in authors %}
+<div class="row" onclick="window.location='{% url 'detail_author' author.id author.coolname %}'" style="cursor:pointer;">
+  <div class="col-5">
+      <img src="{{ author.photo.url }}" class="card-img-top authimg" alt="author_photo">
+      <div>
+        <p class="card-text"><h3>@{{ author.coolname }} </h3>
+      </div>
+  </div>
+  <div class="col-7">
+    <div class="row info">
+      <p class="text-muted font-weight-light">Rank: {{ author.get_ranking }}</p>
+    </div>
+    <div class="row info">
+      <p class="text-muted font-weight-light">Rating: {{ author.get_rating }} <span class="oi oi-star small"</p>
+    </div>
+
+    {%if author.bloglinks%}
+    <div class="row">
+      <p class="text-muted font-weight-light">
+      {% for blog in author.bloglinks.all %}
+        <a href="{{ blog.url }}"><button type="submit" class="my-2 my-sm-0 pl-2 btn btn-outline-dark">{{ blog.sitename }}</button></a>&nbsp;
+      {% endfor %}
+      </p>
+    </div>
+    {%endif%}
+  </div>
+</div>
+<hr/>
+{%endfor%}
+
+{% for work in works %}
+<div class="bgthought">
+  <div class="card border-warning pt-3 px-3 my-3">
+    <div class="row">
+      <div class="col-9" onclick="window.location='{% url 'detail' work.id work.slug%}';" style="cursor:pointer;">
+        <h3 class="titles">
+          {% if work.type == "Thought" %}
+          <img src="/static/t.png" alt="T">
+          {% elif work.type == "Poetry"%}
+          <img src="/static/P.png" alt="P">
+          {% elif work.type == "Short Story"%}
+          <img src="/static/S.png" alt="S">
+          {%endif%}
+          {{work.title}}</h3>
+          <hr/>
+          <div class="row">
+            <div class="col-3 font-weight-light">
+              <span class="oi oi-pencil"></span> {{ work.author }}
+            </div>
+            <div class="col-3 font-weight-light">
+              {{ work.genre }} <span class="oi oi-bookmark"></span>
+            </div>
+            <div class="col-3 font-weight-light">
+              {{ work.word_count }} <span class="oi oi-excerpt"></span>
+            </div>
+          </div>
+          <br/>
+          <p>{{ work.summary | linebreaks }}</p>
+        </div>
+        <div class="pt-3" onclick="window.location='{% url 'detail' work.id work.slug%}';">
+          <div ><button class="btn btn-lg btn-outline-info my-2 my-sm-0 pl-2" type="button">Current: {{ work.get_rating }}<span class="oi oi-star small"></span></button></div>
+      </div>
+        </div>
+      </div>
+    </div>
+{% endfor %}
+
+{% endblock %}

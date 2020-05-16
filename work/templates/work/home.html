@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block content %}
+<style>
+  .titles{
+    font-family:Georgia, serif;
+    color:#000000;
+  }
+
+  .bgthought{
+    opacity:0.7;
+  }
+
+  .bgthought:hover{
+    opacity:1.0;
+  }
+
+</style>
+{% for work in works %}
+<div class="bgthought">
+  <div class="card border-dark pt-3 px-3 my-3">
+    <div class="row">
+      <div class="col-9" onclick="window.location='{% url 'detail' work.id work.slug%}';" style="cursor:pointer;">
+        <h3 class="titles">
+          {% if work.type == "Thought" %}
+          <img src="/static/t.png" alt="T">
+          {% elif work.type == "Poetry"%}
+          <img src="/static/P.png" alt="P">
+          {% elif work.type == "Short Story"%}
+          <img src="/static/S.png" alt="S">
+          {%endif%}
+          {{work.title}}</h3>
+          <hr/>
+          <div class="row">
+            <div class="col-3 font-weight-light">
+              <span class="oi oi-pencil"></span> {{ work.author }}
+            </div>
+            <div class="col-3 font-weight-light">
+              {{ work.genre }} <span class="oi oi-bookmark"></span>
+            </div>
+            <div class="col-3 font-weight-light">
+              {{ work.word_count }} <span class="oi oi-excerpt"></span>
+            </div>
+          </div>
+          <br/>
+          <p>{{ work.summary | linebreaks }}</p>
+        </div>
+        <div class="pt-3" onclick="window.location='{% url 'detail' work.id work.slug%}';">
+          <div><button class="btn btn-lg btn-outline-info my-2 my-sm-0 pl-2" type="button">Current: {{ work.get_rating }}<span class="oi oi-star small"></span></button></div>
+        </div>
+        </div>
+      </div>
+
+    </div>
+    {% endfor %}
+
+    {% endblock %}

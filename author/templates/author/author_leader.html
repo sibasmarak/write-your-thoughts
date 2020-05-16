@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+  .bgthought{
+    opacity:0.7;
+  }
+
+  .bgthought:hover{
+    opacity:1.0;
+  }
+
+  .authimg {
+    border-radius:60%;
+    height: 175px;
+    width: 175px;
+  }
+
+  h3 {
+    font-family:"Comic Sans MS", cursive, sans-serif;
+    font-size: medium;
+  }
+</style>
+{% if error %}
+<div class="alert alert-danger" role="alert">
+  {{ error }}
+</div>
+{% endif%}
+
+{% if msg %}
+<div class="alert alert-success" role="alert">
+  {{ msg }}
+</div>
+{% endif%}
+
+<div class="container typewriter">
+  <h1 class="p-3 mb-2 text-center font-weight-light">Author Leaderboard!</h1>
+</div>
+
+<div class="row center-align ml-2" style="text-align:center;">
+  <large class="form-text text-muted" style="text-align:center;">
+    Hall Of Fame - The Top 20 Authors
+</large>
+</div>
+<hr/>
+
+<br/>
+{% for author in authors %}
+<div class="row" onclick="window.location='{% url 'detail_author' author.id author.coolname %}'" style="cursor:pointer;">
+  <div class="col-5">
+    <img src="{{ author.photo.url }}" class="card-img-top authimg" alt="author_photo">
+    <div>
+      <p class="card-text"><h3>@{{ author.coolname }} </h3>
+      </div>
+    </div>
+    <div class="col-7">
+      <div class="row info">
+        <p class="text-muted font-weight-light">Rank: {{ author.get_ranking }}</p>
+      </div>
+      <div class="row info">
+        <p class="text-muted font-weight-light">Rating: {{ author.get_rating }} <span class="oi oi-star small"</p>
+        </div>
+
+        {%if author.bloglinks.all %}
+        <div class="row">
+          <p class="text-muted font-weight-light">
+            {% for blog in author.bloglinks.all %}
+            <a href="{{ blog.url }}"><button type="submit" class="my-2 my-sm-0 pl-2 btn btn-outline-dark">{{ blog.sitename }}</button></a>&nbsp;
+            {% endfor %}
+          </p>
+        </div>
+        {%endif%}
+      </div>
+    </div>
+    <hr/>
+    {%endfor%}
+
+    {% endblock %}
